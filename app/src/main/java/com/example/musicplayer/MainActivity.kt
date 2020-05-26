@@ -1,0 +1,25 @@
+package com.example.musicplayer
+
+import android.content.Context
+import android.content.Intent
+import android.database.Cursor
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+
+        val intent = Intent(this, PlayScreen::class.java)
+        intent.putExtra("MUSIC", R.raw.pastel_house)
+        startActivity(intent)
+    }
+}
