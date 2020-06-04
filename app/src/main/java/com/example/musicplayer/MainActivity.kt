@@ -34,22 +34,17 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE)
         }
 
-        val (id, title) = searchMusicUrl(contentResolver)
-        if(id != null)
-            {
-                val intent = Intent(this, PlayScreen::class.java)
-                intent.putExtra("TITLE", title)
-                intent.putExtra("id", id)
-                startActivity(intent)
-            }
+        val intent = searchMusicUrl()
+        if(intent != null)
+        {
+            startActivity(intent)
+        }
     }
 
-    fun searchMusicUrl(resolver: ContentResolver): Pair<Long?, String?>
+    fun searchMusicUrl(): Intent?
     {
-        var title: String? = null
-        var id: Long? = null
-        Log.d("debugLog", "called")
-        val cursor:Cursor? = resolver.query(
+        var intent: Intent? = Intent(this, PlayScreen::class.java)
+        val cursor:Cursor? = contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             null,
             null,
@@ -58,16 +53,15 @@ class MainActivity : AppCompatActivity() {
         )
         when {
             cursor == null -> {
+                intent = null
                 // query failed, handle error.
             }
-            !cursor.moveToFirst() -> {
+            !cursor.moveToPosition(1800) -> {
                 // no media on the device
+                intent = null
             }
             else -> {
-                val titleColumn: Int = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE)
-                val idColumn: Int = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID)
-                title = cursor.getString(titleColumn)
-                id = cursor.getLong(idColumn)
+                if(intent != null) intent = setCulmunsToIntent(intent, cursor)
 //                do {
 //                    val thisId = cursor.getLong(idColumn)
 //                    val thisTitle = cursor.getString(titleColumn)
@@ -76,7 +70,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         cursor?.close()
-        return Pair(id, title)
+        return intent
+    }
+
+    fun setCulmunsToIntent(intent: Intent, cursor: Cursor): Intent
+    {
+        intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID)))//idのセット
+        intent.putExtra("TITLE", cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE)))//タイトルのセット
+        intent.putExtra("ARTIST", cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST)))//アーティストのセット
+        return intent
     }
 
 }
