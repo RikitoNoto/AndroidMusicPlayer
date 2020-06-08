@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        startActivity(Intent(this, MainMenu::class.java))
+
+        /*
         val permission:Int = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED)
         {
@@ -39,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         {
             startActivity(intent)
         }
+
+         */
     }
 
     fun searchMusicUrl(): Intent?
