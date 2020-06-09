@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 intent = null
                 // query failed, handle error.
             }
-            !cursor.moveToPosition(1800) -> {
+            !cursor.moveToPosition((Math.random() * cursor.count).toInt()) -> {
                 // no media on the device
                 intent = null
             }
@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID)))//idのセット
         intent.putExtra("TITLE", cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE)))//タイトルのセット
         intent.putExtra("ARTIST", cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST)))//アーティストのセット
+        intent.putExtra("ALBUM_ID", cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ALBUM_ID)))//アルバムのID
         return intent
     }
 

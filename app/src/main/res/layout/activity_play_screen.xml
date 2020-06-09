@@ -2,10 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
     tools:context=".PlayScreen">
+
+    <ImageView
+        android:id="@+id/albumImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artistText"
+        app:srcCompat="@drawable/test_jacket" />
 
     <TextView
         android:id="@+id/titleText"
@@ -13,11 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@color/text_backcolor"
+        android:maxLines="1"
         android:paddingStart="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/white"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/text_backcolor"
+        android:maxLines="1"
         android:paddingStart="24dp"
         android:text="TextView"
         android:textColor="@android:color/white"
@@ -85,18 +100,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/fast_forward_button"
         app:layout_constraintStart_toEndOf="@+id/fast_forward_button"
         app:srcCompat="@drawable/skip_next" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:scaleType="fitStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistText"
-        app:srcCompat="@drawable/test_jacket" />
 
     <ImageButton
         android:id="@+id/imageButton2"

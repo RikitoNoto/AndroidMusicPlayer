@@ -1,14 +1,19 @@
 package com.example.musicplayer
 
+import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Intent
-import android.media.AudioManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.util.Log
+import android.view.ViewTreeObserver
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_play_screen.*
+import java.io.InputStream
+
 
 class PlayScreen : AppCompatActivity() {
     private lateinit var musicPlayer : MediaPlayer
@@ -38,6 +43,34 @@ class PlayScreen : AppCompatActivity() {
         titleText.text = intent.getStringExtra("TITLE")//曲のタイトルの取得
         artistText.text = intent.getStringExtra("ARTIST")//アーティスト名の取得
 
+        val albumArtUri: Uri = Uri.parse("content://media/external/audio/albumart")
+
+        val alubum_id = intent.getLongExtra("ALBUM_ID", 0L)
+        if( alubum_id != 0L)//アルバムなら画像のセット
+        {
+            val album1Uri: Uri = ContentUris.withAppendedId(albumArtUri, alubum_id)
+
+            val displayMetrics = resources.displayMetrics
+
+            val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+            val cr: ContentResolver = getContentResolver ()
+            val inputStream: InputStream = cr.openInputStream(album1Uri)
+            val albumArt: Bitmap  = BitmapFactory.decodeStream(inputStream)
+
+            val resizeScale: Double = dpWidth.toDouble() / albumArt.width
+
+
+            albumImage.setImageBitmap(Bitmap.createScaledBitmap(albumArt, (albumArt.width * resizeScale).toInt(), (albumArt.height * resizeScale).toInt(), true))
+        }
+
+
+
+
+
+
+
+
+
     }
 
     //再生ボタンが押されたときに実行。セットされている音楽を再生
@@ -47,6 +80,11 @@ class PlayScreen : AppCompatActivity() {
         musicPlayer.start()
         playButton.setImageResource(R.drawable.pause)
         playButton.setOnClickListener{ PauseMusic()}
+
+        val displayMetrics = resources.displayMetrics
+
+        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+        Log.d("debug", dpWidth.toString())
     }
 
     //ポーズボタンが押されたときに実行。再生されている音楽を一時停止
