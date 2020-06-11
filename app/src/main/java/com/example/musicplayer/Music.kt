@@ -1,8 +1,5 @@
 package com.example.musicplayer
 
-class Music
+class Music(var id: Long, var title: String, var artist: String, val clickListener: ()-> Unit )
 {
-    var id: Long = -1
-    var title: String = ""
-    var artist: String = ""
 }
