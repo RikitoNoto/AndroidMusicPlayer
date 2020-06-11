@@ -79,11 +79,14 @@ class MainMenu : AppCompatActivity() {
         val id = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID))//idのセット
         val title = cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE))//タイトルのセット
         val artist = cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST))//アーティストのセット
+        val album_id = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ALBUM_ID))//アルバムのID
+
         val music: Music = Music(id, title, artist){
             val intent = Intent(this, PlayScreen::class.java)
             intent.putExtra("ID", id)
             intent.putExtra("TITLE", title)
             intent.putExtra("ARTIST", artist)
+            intent.putExtra("ALBUM_ID", album_id)
 
             startActivity(intent)
         }
