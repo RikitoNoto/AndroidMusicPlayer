@@ -6,6 +6,12 @@
         android:icon="@drawable/music"
         android:title="music" />
     <item
+        android:icon="@drawable/person"
+        android:title="artist" />
+    <item
+        android:icon="@drawable/album"
+        android:title="album" />
+    <item
         android:icon="@drawable/play_list"
         android:title="play list" />
     <item
