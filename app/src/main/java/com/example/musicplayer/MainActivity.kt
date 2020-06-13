@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this, MainMenu::class.java))
+        val intent = Intent(this, MainMenu::class.java)
+        intent.putExtra("SORT","${android.provider.MediaStore.Audio.Media.TITLE} ASC")
+        startActivity(intent)
     }
 
 

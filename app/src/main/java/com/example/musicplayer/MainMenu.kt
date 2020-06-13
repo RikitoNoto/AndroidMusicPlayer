@@ -18,11 +18,11 @@ class MainMenu : AppCompatActivity() {
     val REQUEST_EXTERNAL_STORAGE: Int = 1
     val PERMISSIONS_STORAGE: Array<String> = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private lateinit var sort: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +33,8 @@ class MainMenu : AppCompatActivity() {
         {
             ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE)
         }
+
+        sort = intent.getStringExtra("SORT")
 
         val musicList = createMusicList()
 
@@ -53,7 +55,7 @@ class MainMenu : AppCompatActivity() {
             null,
             null,
             null,
-            null
+            sort
         )
         when {
             cursor == null -> {
