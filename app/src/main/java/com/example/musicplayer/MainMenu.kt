@@ -1,5 +1,6 @@
 package com.example.musicplayer
 
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,20 +36,38 @@ class MainMenu : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE)
         }
 
-        sort = intent.getStringExtra("SORT")
-
-        val musicList = createMusicList()
-
         bottomNavigation = findViewById(R.id.footer_menu) as BottomNavigationView
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = MusicAdapter(musicList)
 
-        this.musicList.layoutManager = viewManager
-        this.musicList.adapter = viewAdapter
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId)
+            {
+                R.id.music -> {
+                    musicPane()
+                }
 
+                R.id.artist -> {
+
+                }
+
+                R.id.album -> {
+
+                }
+
+                R.id.play_list -> {
+
+                }
+
+                R.id.settings -> {
+
+                }
+            }
+            return@setOnNavigationItemSelectedListener true
+        }
+
+        musicPane()
     }
 
-    fun createMusicList(): ArrayList<Music>
+    fun createMusicList(sort: String): ArrayList<Music>
     {
         var musics: ArrayList<Music> = ArrayList<Music>()
         val cursor: Cursor? = contentResolver.query(
@@ -93,5 +113,25 @@ class MainMenu : AppCompatActivity() {
             startActivity(intent)
         }
         return music
+    }
+
+    fun musicPane()
+    {
+        sort = intent.getStringExtra("SORT")//ソートのクエリを受け取り
+
+        val musicList = createMusicList(sort)
+
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = MusicAdapter(musicList)
+
+        this.musicList.layoutManager = viewManager
+        this.musicList.adapter = viewAdapter
+
+        val fragment = MusicListFragment()
+        val fragmentManager = this.supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
