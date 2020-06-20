@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musicplayer.models.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_music_list.*
 
@@ -46,11 +47,10 @@ class MainMenu : AppCompatActivity() {
                 }
 
                 R.id.artist -> {
-
                 }
 
                 R.id.album -> {
-
+                    albumPane()
                 }
 
                 R.id.play_list -> {
@@ -103,7 +103,7 @@ class MainMenu : AppCompatActivity() {
         val artist = cursor.getString(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST))//アーティストのセット
         val album_id = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ALBUM_ID))//アルバムのID
 
-        val music: Music = Music(id, title, artist){
+        val music: Music = Music(this, id){
             val intent = Intent(this, PlayScreen::class.java)
             intent.putExtra("ID", id)
             intent.putExtra("TITLE", title)
@@ -134,4 +134,41 @@ class MainMenu : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
+
+    fun albumPane()
+    {
+        var albums: ArrayList<Album> = ArrayList<Album>()
+        val cursor: Cursor? = contentResolver.query(
+            MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+            null,
+            null,
+            null,
+            sort
+        )
+        when {
+            cursor == null -> {
+                // query failed, handle error.
+            }
+            !cursor.moveToFirst() -> {
+                // no media on the device
+            }
+            else -> {
+                do {
+                    cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ALBUM_ID)
+                    albums.add(createAlbum(cursor))
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor?.close()
+    }
+
+    fun createAlbum(cursor: Cursor): Album
+    {
+        var album: Album = Album(this, cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Albums._ID))){
+
+        }
+
+        return album
+    }
+
 }

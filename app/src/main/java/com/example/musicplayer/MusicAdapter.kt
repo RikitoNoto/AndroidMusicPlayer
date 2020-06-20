@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musicplayer.models.Music
 
 
 class MusicAdapter(private val musicDataset: ArrayList<Music>): RecyclerView.Adapter<MusicAdapter.MusicViewHolder>()
